@@ -1,0 +1,13 @@
+name: Keep Render Awake
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # every 5 minutes
+  workflow_dispatch:      # allows manual trigger too
+
+jobs:
+  ping-render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send ping to Render
+        run: curl --fail https://water-checker.onrender.com/water-check?pincode=400001
