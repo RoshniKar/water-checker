@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 import math
 import threading
-import requests
 import time
 
 app = FastAPI()
