@@ -5,6 +5,7 @@ import json
 import math
 import threading
 import time
+import requests  # ⬅️ NEW import for logging
 
 app = FastAPI()
 
@@ -35,6 +36,17 @@ for pincode, city in pincode_to_city.items():
 all_ppms = [v["ppm"] for v in hardness_map.values() if v["ppm"] is not None]
 mu_final = sum(all_ppms) / len(all_ppms)
 sigma = (sum((x - mu_final) ** 2 for x in all_ppms) / len(all_ppms)) ** 0.5
+
+
+# 🔹 Logging function
+def log_to_sheet(pincode, city, ppm):
+    url = "https://script.google.com/macros/s/AKfycbye69XWAyYnrWOOpKlSr_ipd1d7O9SrKsZ5dMeHfygvFHMZCsXhIzRbUIf-NdPIhvrkfQ/exec"  
+    payload = {"pincode": pincode, "city": city, "ppm": ppm}
+    try:
+        requests.post(url, json=payload, timeout=5)
+    except Exception as e:
+        print("❌ Failed to log to Google Sheet:", e)
+
 
 @app.get("/water-check")
 def check_water(pincode: str):
@@ -76,6 +88,9 @@ def check_water(pincode: str):
 
     # Calculate percentile (like HelloKlean)
     percentile = 100 / (1 + math.exp(-(ppm - mu_final) / sigma))
+
+    # 🔹 Log request to Google Sheet
+    log_to_sheet(pincode, city, ppm)
 
     return [{
         "city": city,
