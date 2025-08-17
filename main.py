@@ -40,12 +40,13 @@ sigma = (sum((x - mu_final) ** 2 for x in all_ppms) / len(all_ppms)) ** 0.5
 
 # 🔹 Logging function
 def log_to_sheet(pincode, city, ppm):
-    url = "https://script.google.com/macros/s/AKfycbye69XWAyYnrWOOpKlSr_ipd1d7O9SrKsZ5dMeHfygvFHMZCsXhIzRbUIf-NdPIhvrkfQ/exec"  
-    payload = {"pincode": pincode, "city": city, "ppm": ppm}
-    try:
-        requests.post(url, json=payload, timeout=5)
-    except Exception as e:
-        print("❌ Failed to log to Google Sheet:", e)
+    if str(pincode) != "400001":  
+        url = "https://script.google.com/macros/s/AKfycbye69XWAyYnrWOOpKlSr_ipd1d7O9SrKsZ5dMeHfygvFHMZCsXhIzRbUIf-NdPIhvrkfQ/exec"  
+        payload = {"pincode": pincode, "city": city, "ppm": ppm}
+        try:
+            requests.post(url, json=payload, timeout=5)
+        except Exception as e:
+            print("❌ Failed to log to Google Sheet:", e)
 
 
 @app.get("/water-check")
