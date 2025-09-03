@@ -39,7 +39,7 @@ sigma = (sum((x - mu_final) ** 2 for x in all_ppms) / len(all_ppms)) ** 0.5
 
 
 # 🔹 Logging function
-def log_to_sheet(pincode, city, ppm):
+def log_to_sheet(pincode, city, ppm, email):
     if str(pincode) != "400001":  
         url = "https://script.google.com/macros/s/AKfycbwpTUIKRjp32Mvw0bSLTjzg2dY5zbiDVY6AKLLBMKKm6favXa-Jvs3qMMlkPlOOkCybVg/exec"  
         payload = {"pincode": pincode, "city": city, "ppm": ppm, "email": email}
@@ -91,7 +91,7 @@ def check_water(pincode: str, email: str):
     percentile = 100 / (1 + math.exp(-(ppm - mu_final) / sigma))
 
     # 🔹 Log request to Google Sheet
-    log_to_sheet(pincode, city, ppm)
+    log_to_sheet(pincode, city, ppm, email)
 
     return [{
         "city": city,
