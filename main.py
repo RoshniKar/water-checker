@@ -41,8 +41,8 @@ sigma = (sum((x - mu_final) ** 2 for x in all_ppms) / len(all_ppms)) ** 0.5
 # 🔹 Logging function
 def log_to_sheet(pincode, city, ppm):
     if str(pincode) != "400001":  
-        url = "https://script.google.com/macros/s/AKfycbye69XWAyYnrWOOpKlSr_ipd1d7O9SrKsZ5dMeHfygvFHMZCsXhIzRbUIf-NdPIhvrkfQ/exec"  
-        payload = {"pincode": pincode, "city": city, "ppm": ppm}
+        url = "https://script.google.com/macros/s/AKfycbwpTUIKRjp32Mvw0bSLTjzg2dY5zbiDVY6AKLLBMKKm6favXa-Jvs3qMMlkPlOOkCybVg/exec"  
+        payload = {"pincode": pincode, "city": city, "ppm": ppm, "email": email}
         try:
             requests.post(url, json=payload, timeout=5)
         except Exception as e:
@@ -50,7 +50,7 @@ def log_to_sheet(pincode, city, ppm):
 
 
 @app.get("/water-check")
-def check_water(pincode: str):
+def check_water(pincode: str, email: str):
     ppm = None
     city = None
 
